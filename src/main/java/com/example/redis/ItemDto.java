@@ -1,5 +1,6 @@
 package com.example.redis;
 
+import java.io.Serializable;
 import lombok.*;
 
 @Getter
@@ -7,7 +8,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemDto {
+public class ItemDto implements Serializable {
     private Long id;
     private String name;
     private String description;
