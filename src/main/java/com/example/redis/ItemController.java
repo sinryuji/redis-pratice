@@ -1,11 +1,14 @@
 package com.example.redis;
 
-import java.util.List;
+import com.example.redis.domain.ItemDto;
+import com.example.redis.domain.ItemOrderDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("items")
@@ -13,24 +16,10 @@ import org.springframework.web.bind.annotation.*;
 public class ItemController {
     private final ItemService itemService;
 
-    @PostMapping("{id}/purchase")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void purchase(
-            @PathVariable("id")
-            Long id
-    ) {
-        itemService.purchase(id);
-    }
-
-    @GetMapping("/ranks")
-    public List<ItemDto> getRanks() {
-        return itemService.getMostSold();
-    }
-
     @PostMapping
     public ItemDto create(
-        @RequestBody
-        ItemDto itemDto
+            @RequestBody
+            ItemDto itemDto
     ) {
         return itemService.create(itemDto);
     }
@@ -42,18 +31,18 @@ public class ItemController {
 
     @GetMapping("{id}")
     public ItemDto readOne(
-        @PathVariable("id")
-        Long id
+            @PathVariable("id")
+            Long id
     ) {
         return itemService.readOne(id);
     }
 
     @PutMapping("{id}")
     public ItemDto update(
-        @PathVariable("id")
-        Long id,
-        @RequestBody
-        ItemDto dto
+            @PathVariable("id")
+            Long id,
+            @RequestBody
+            ItemDto dto
     ) {
         return itemService.update(id, dto);
     }
@@ -61,14 +50,32 @@ public class ItemController {
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
-        @PathVariable
-        Long id
+            @PathVariable
+            Long id
     ) {
         itemService.delete(id);
     }
 
-    @GetMapping("/search")
-    public Page<ItemDto> search(@RequestParam("q") String query, Pageable pageable) {
+    @GetMapping("search")
+    public Page<ItemDto> search(
+            @RequestParam(name = "q")
+            String query,
+            Pageable pageable
+    ) {
         return itemService.searchByName(query, pageable);
+    }
+
+    @PostMapping("{id}/purchase")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void purchase(
+            @RequestBody
+            ItemOrderDto dto
+    ) {
+        itemService.purchase(dto);
+    }
+
+    @GetMapping("/ranks")
+    public List<ItemDto> getRanks() {
+        return itemService.getMostSold();
     }
 }

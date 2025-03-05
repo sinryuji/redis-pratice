@@ -1,7 +1,8 @@
-package com.example.redis;
+package com.example.redis.domain;
+
+import lombok.*;
 
 import java.io.Serializable;
-import lombok.*;
 
 @Getter
 @ToString
@@ -14,13 +15,12 @@ public class ItemDto implements Serializable {
     private String description;
     private Integer price;
 
-    public static ItemDto fromEntity(Item entity) {
+    public static ItemDto fromEntity(Item item) {
         return ItemDto.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .price(entity.getPrice())
+                .id(item.getId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .price(item.getPrice())
                 .build();
     }
 }
-
