@@ -29,4 +29,9 @@ public class RedisConfig {
         redisTemplate.setValueSerializer(new GenericToStringSerializer<>(Integer.class));
         return redisTemplate;
     }
+
+    @Bean
+    public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
+        return RedisSerializer.json();
+    }
 }
